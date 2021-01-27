@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qf.mapper.GardenMapper">
+
+    <select id="selectAll" resultType="garden">
+        select * from garden
+        <trim prefix="where" prefixOverrides="and">
+            <if test="keywords1 != null">
+                and name like concat('%',#{keywords1},'%')
+            </if>
+            <if test="keywords2 != null">
+                and address like "%${keywords2}%"
+            </if>
+        </trim>
+    </select>
+
+    <!--  主键回填方式1 ,主键回填到实体类，以便在后面用到id的时候方便拿 -->
+    <insert id="addOne" useGeneratedKeys="true" keyProperty="id">
+        insert into garden values (null, #{code}, #{name}, #{address}, #{area}, #{building}, #{green}, #{image}, #{time})
+    </insert>
+<!--    &lt;!&ndash;  主键回填方式2  &ndash;&gt;-->
+<!--    <insert id="addOne">-->
+<!--        <selectKey keyProperty="id" resultType="java.lang.Integer" order="AFTER">-->
+<!--            select last_insert_id()-->
+<!--        </selectKey>-->
+<!--        insert into garden values (null, #{code}, #{name}, #{address}, #{area}, #{building}, #{green}, #{image}, #{time})-->
+<!--    </insert>-->
+
+    <delete id="deleteOne" >
+        delete from garden where id = #{id}
+    </delete>
+
+    <select id="selectOne" resultType="garden">
+        select * from garden where id = #{id};
+    </select>
+
+    <update id="updateOne">
+        update garden set code = #{code}, name = #{name}, address = #{address}, area = #{area}, building = #{building}, green = #{green}, image = #{image}, time = #{time} where id = #{id}
+    </update>
+
+
+
+</mapper>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qf.mapper.HouseMapper">
+
+    <select id="selectAll" resultType="house">
+        select * from house
+        <trim prefix="where" prefixOverrides="and">
+            <if test="keywords1 != null">
+                and garden like "%${keywords1}%"
+            </if>
+            <if test="keywords2 != null">
+                and housename like concat("%",#{keywords2},"%")
+            </if>
+        </trim>
+    </select>
+
+    <insert id="addOne" useGeneratedKeys="true" keyProperty="id">
+        insert into house values (null, #{garden}, #{buildingName}, #{code}, #{houseName}, #{householderName}, #{phone}, #{houseNumber}, #{unit}, #{floor}, #{description}, #{time})
+    </insert>
+
+
+
+</mapper>
